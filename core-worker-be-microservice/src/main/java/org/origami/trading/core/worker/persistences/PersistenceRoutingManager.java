@@ -4,14 +4,23 @@ import org.origami.trading.core.worker.daos.repositories.HistoricalDailyBarsRepo
 import org.origami.trading.core.worker.entities.HistoricalDailyBar;
 import org.origami.trading.core.worker.persistences.cache.InMemoryBarsCache;
 
+
 /**
- * Created by dmoreira on 4/16/17.
+ * @author dmoreira
+ *
+ * Class that will handle routing of queries to either Cache or Database
+ *
  */
 public class PersistenceRoutingManager {
 
     private InMemoryBarsCache inMemoryBarsCache;
     private HistoricalDailyBarsRepository historicalDailyBarsRepository;
 
+    /**
+     *
+     * @param ticker
+     * @return
+     */
     public HistoricalDailyBar findBar(String ticker) {
         HistoricalDailyBar bar = null;
         // Level 1 Search: In-Memory
@@ -19,8 +28,11 @@ public class PersistenceRoutingManager {
         if (bar == null) {
             //Level 2 Search: Persistence
             bar = historicalDailyBarsRepository.findOne(ticker);
+            //When a Bar is found in the DB, cache the result
+            if (bar != null) {
+                inMemoryBarsCache.put(bar);
+            }
         }
-
         return bar;
     }
 

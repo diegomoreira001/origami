@@ -22,8 +22,6 @@ public class BymaQuotesPollingService {
 
         List<BymaStock> bymaBlueChipStocks = bymaRestDao.getQuotes(BymaStock.class, QueryType.BLUE_CHIP_STOCKS);
         bymaDailyBarsProcessor.processCurrentBars(bymaBlueChipStocks);
-        //Retrieve stocks from Bolsar
-        //
 
 
     }

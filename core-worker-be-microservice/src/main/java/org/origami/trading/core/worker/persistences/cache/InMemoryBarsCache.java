@@ -16,4 +16,9 @@ public class InMemoryBarsCache {
         return barsByTicker.get(ticker);
     }
 
+    public HistoricalDailyBar put(HistoricalDailyBar bar) {
+        barsByTicker.put(bar.getHiTicker(), bar);
+        return bar;
+    }
+
 }
